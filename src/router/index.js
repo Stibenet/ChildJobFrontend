@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import VacancyList from '../components/VacancyList.vue'
 import UserLogin from '../components/UserLogin.vue'
 import AdminDashboard from '../components/AdminDashboard.vue'
-import AdminVacancies from '../components/AdminVacancies.vue' // Импортируем новый компонент
+import AdminVacancies from '../components/AdminVacancies.vue'
+import AdminUsers from '../components/AdminUsers.vue' // Импортируем новый компонент
 
 const routes = [
     {
@@ -27,9 +28,15 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/admin/vacancies', // Новый маршрут
+        path: '/admin/vacancies',
         name: 'AdminVacancies',
         component: AdminVacancies,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin/users', // Новый маршрут
+        name: 'AdminUsers',
+        component: AdminUsers,
         meta: { requiresAuth: true }
     }
 ]
@@ -40,7 +47,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const isLoggedIn = localStorage.getItem('userToken') === 'true' || localStorage.getItem('userToken'); // Проверяем наличие токена
+    const isLoggedIn = localStorage.getItem('userToken') !== null;
     if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
         next('/login');
     } else {

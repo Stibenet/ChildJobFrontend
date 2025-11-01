@@ -2,16 +2,17 @@
   <div class="admin">
     <h2>Админ-панель</h2>
     <p>{{ message }}</p>
-    <!-- Добавим ссылку на управление вакансиями -->
+    <!-- Добавим ссылки на управление вакансиями и пользователями -->
     <p>
-      <router-link to="/admin/vacancies">Управление Вакансиями</router-link>
+      <router-link to="/admin/vacancies">Управление Вакансиями</router-link> |
+      <router-link to="/admin/users">Управление Пользователями</router-link>
     </p>
     <button @click="logout">Выйти</button>
   </div>
 </template>
 
 <script>
-import apiClient from '../utils/axios' // Импортируем apiClient
+import apiClient from '../utils/axios'
 
 export default {
   name: 'AdminDashboard',
@@ -22,7 +23,6 @@ export default {
   },
   async mounted() {
     try {
-      // Токен будет добавлен автоматически через interceptor
       const response = await apiClient.get('/admin/dashboard');
       this.message = response.data;
     } catch (err) {
