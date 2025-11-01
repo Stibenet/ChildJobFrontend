@@ -1,28 +1,31 @@
 <template>
   <div id="app">
-    <h1>Детские Вакансии</h1>
-    <VacancyList />
+    <nav>
+      <router-link to="/">Вакансии</router-link> |
+      <!-- Показываем "Войти" если НЕ авторизован -->
+      <router-link to="/login" v-if="!isLoggedIn">Войти</router-link>
+      <!-- Показываем "Админ" и "Выйти" если авторизован -->
+      <router-link to="/admin" v-if="isLoggedIn">Админ</router-link>
+      <a href="#" @click.prevent="logout" v-if="isLoggedIn"> (Выйти)</a>
+    </nav>
+    <router-view />
   </div>
 </template>
 
 <script>
-import VacancyList from './components/VacancyList.vue'
-
 export default {
   name: 'App',
-  components: {
-    VacancyList
+  computed: {
+    isLoggedIn() {
+      return localStorage.getItem('userToken') !== null;
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('userToken');
+      // Удалите сессию (в реальности тут был бы вызов logout API и удаление токена)
+      this.$router.push('/login');
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
