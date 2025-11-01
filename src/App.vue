@@ -2,11 +2,10 @@
   <div id="app">
     <nav>
       <router-link to="/">Вакансии</router-link> |
-      <!-- Показываем "Войти" если НЕ авторизован -->
       <router-link to="/login" v-if="!isLoggedIn">Войти</router-link>
-      <!-- Показываем "Админ" и "Выйти" если авторизован -->
-      <router-link to="/admin" v-if="isLoggedIn">Админ</router-link>
-      <a href="#" @click.prevent="logout" v-if="isLoggedIn"> (Выйти)</a>
+      <!-- Изменили текст и добавили ссылку на вакансии -->
+      <router-link to="/admin" v-if="isLoggedIn">Панель администратора</router-link> |
+      <a href="#" @click.prevent="logout" v-if="isLoggedIn"> Выйти</a>
     </nav>
     <router-view />
   </div>
@@ -23,7 +22,6 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem('userToken');
-      // Удалите сессию (в реальности тут был бы вызов logout API и удаление токена)
       this.$router.push('/login');
     }
   }

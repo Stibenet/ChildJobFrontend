@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import apiClient from '../utils/axios' // Используем наш настроенный клиент
 
 export default {
   name: 'VacancyList',
@@ -29,8 +29,8 @@ export default {
   },
   async mounted() {
     try {
-      // Замените localhost:8080 на ваш API URL, если он запущен на другом хосте/порте
-      const response = await axios.get('http://localhost:8080/api/vacancies/getAllActiveVacancies')
+      // Используем правильный эндпоинт
+      const response = await apiClient.get('/vacancies') // GET /api/vacancies
       this.vacancies = response.data
     } catch (err) {
       console.error('Ошибка при получении вакансий:', err);

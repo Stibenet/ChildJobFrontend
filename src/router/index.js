@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import VacancyList from '../components/VacancyList.vue'
-import UserLogin from '../components/UserLogin.vue' // Изменили
-import AdminDashboard from '../components/AdminDashboard.vue' // Изменили
+import UserLogin from '../components/UserLogin.vue'
+import AdminDashboard from '../components/AdminDashboard.vue'
+import AdminVacancies from '../components/AdminVacancies.vue' // Импортируем новый компонент
 
 const routes = [
     {
@@ -17,13 +18,19 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: UserLogin // Изменили
+        component: UserLogin
     },
     {
         path: '/admin',
         name: 'Admin',
-        component: AdminDashboard, // Изменили
-        meta: { requiresAuth: true } // Защита маршрута
+        component: AdminDashboard,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin/vacancies', // Новый маршрут
+        name: 'AdminVacancies',
+        component: AdminVacancies,
+        meta: { requiresAuth: true }
     }
 ]
 
@@ -32,9 +39,8 @@ const router = createRouter({
     routes
 })
 
-// Глобальный маршрутный хук для защиты
 router.beforeEach((to, from, next) => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = localStorage.getItem('userToken') === 'true' || localStorage.getItem('userToken'); // Проверяем наличие токена
     if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
         next('/login');
     } else {
